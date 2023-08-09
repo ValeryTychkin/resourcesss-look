@@ -1,3 +1,5 @@
 .DS_Store
-/Config/app.env
+.env
+.swiftpm
+.build
 
