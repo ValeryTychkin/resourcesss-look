@@ -18,7 +18,7 @@ void  buffingResult(char imput_message[], size_t message_size, char buffer[]);
 
 uint64_t getTotalRamMemory(void);
 
-unsigned long getPageRamMemorySize(void);
+page getPageRamMemorySize(void);
 
 void buffingRamInfoResult(char buffer[]);
 
@@ -166,8 +166,8 @@ int loadRamMemoryInfo(struct ram_memory_info *rm) {
 
 uint64_t getTotalRamMemory(void) {
     // TODO add other os support (now only unix)
-    unsigned long total_pages = sysconf(_SC_PHYS_PAGES);
-    unsigned long page_size = getPageRamMemorySize();
+    page total_pages = sysconf(_SC_PHYS_PAGES);
+    page page_size = getPageRamMemorySize();
     return total_pages * page_size;
 }
 
