@@ -2,4 +2,5 @@
 .env
 .swiftpm
 .build
-
+UNIXSocket/server
+UNIXSocket/client
