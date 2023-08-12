@@ -1,5 +1,5 @@
 class ServerRam {
-    let serverBase: ServerBase
+    let socketClient: SocketClient
     
     // TODO add swap
     
@@ -28,7 +28,7 @@ class ServerRam {
         return 0
     }
     
-    init(serverBase: ServerBase) {
-        self.serverBase = serverBase
+    init(socketClient: SocketClient) {
+        self.socketClient = socketClient
     }
 }
