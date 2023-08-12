@@ -1,22 +1,12 @@
-#ifndef unix_socket_h
-#define unix_socket_h
+//
+//  base_socket.c
+//  
+//
+//  Created by Валерий on 12.08.2023.
+//
+#include <sys/stat.h>
 
-
-#include <stdio.h>
-#include <stdbool.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <sys/socket.h>
-#include <sys/un.h>
-
-
-#define CLIENT_FILE_NAME "client.sock"
-#define SERVER_FILE_NAME "server.sock"
-#define QUEUE_SIZE 5
-#define BUFFER_SIZE 4096
-#define CMD_RAM_INFO "ram_info"
-
+#include "base_socket.h"
 
 struct sockaddr_un createUnixAddr(char file_name[]) {
     printf("Creating structur of socket addres (file_name: \"%s\")\n", file_name);
@@ -46,11 +36,14 @@ int initSocket(void) {
 
 
 int initSocketAndBind(char file_name[]) {
+    // TODO NEED CHANGE FORM FILE ON IP:PORT!!!! Can't connect by file fom docker image to server through the docker volume
     bool need_close_socket = false;
     
     int socket_d = initSocket();
     
     struct sockaddr_un socket_addr = createUnixAddr(file_name);
+    
+    unlink(file_name);
     
     printf("Binding socket server\n");
     int socket_bind = bind(socket_d, (struct sockaddr *)&socket_addr, sizeof(socket_addr));
@@ -59,6 +52,9 @@ int initSocketAndBind(char file_name[]) {
         need_close_socket = true;
     }
     
+    
+    chmod(socket_addr.sun_path, S_IFMT|S_IRWXU|S_IRWXG|S_IRWXO);
+    
     if (need_close_socket) {
         closeSocket(socket_d);
         return -1;
@@ -66,4 +62,3 @@ int initSocketAndBind(char file_name[]) {
     return socket_d;
 }
 
-#endif

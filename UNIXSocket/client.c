@@ -1,29 +1,29 @@
-#include "unix_socket.h"
+#include "client.h"
 
 
-void connectAndSend(char message[], int message_size, char buffer[]);
+void connectAndSend(char socket_file_path[], char message[], int message_size, char buffer[]);
 
 
-int getRamInfo(char buffer[]);
+int getRamInfo(char socket_file_path[], char buffer[]);
 
 
 int main(void) {
     printf("Start testing sending");
     char *buffer = malloc(BUFFER_SIZE);
     char message[] = "Incorrect cmd str";
-    connectAndSend(message, sizeof(message), buffer);
+    connectAndSend(SERVER_FILE_NAME, message, sizeof(message), buffer);
     memset(buffer, 0, BUFFER_SIZE);
-    getRamInfo(buffer);
+    getRamInfo(SERVER_FILE_NAME, buffer);
     printf("Free buffer (str in buffer: \"%s\")\n", buffer);
     free(buffer);
 }
 
 
-int connectToServer(void) {
+int connectToServer(char socket_file_path[]) {
     bool need_close = false;
     int socket_d = initSocket();
     
-    struct sockaddr_un socket_addr = createUnixAddr(SERVER_FILE_NAME);
+    struct sockaddr_un socket_addr = createUnixAddr(socket_file_path);
     printf("Connecting to socket server\n");
     if (connect(socket_d, (struct sockaddr *)&socket_addr, sizeof(socket_addr)) == -1) {
         perror("Failed client connection\n");
@@ -42,14 +42,14 @@ void sendRequest(int socket_d, char message[], int message_size, char buffer[]) 
 }
 
 
-void connectAndSend(char message[], int message_size, char buffer[]) {
-    int socket_d = connectToServer();
+void connectAndSend(char socket_file_path[], char message[], int message_size, char buffer[]) {
+    int socket_d = connectToServer(socket_file_path);
     sendRequest(socket_d, message, message_size, buffer);
 }
 
 
-int getRamInfo(char buffer[]) {
+int getRamInfo(char socket_file_path[], char buffer[]) {
     char command[] = CMD_RAM_INFO;
-    connectAndSend(command, sizeof(command), buffer);
+    connectAndSend(socket_file_path, command, sizeof(command), buffer);
     return *buffer;
 }

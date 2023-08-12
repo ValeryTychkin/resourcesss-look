@@ -4,3 +4,8 @@
 .build
 UNIXSocket/server
 UNIXSocket/client
+Sources/CClientSocket/base_socket.c
+Sources/CClientSocket/client.c
+Sources/CClientSocket/include/base_socket.h
+Sources/CClientSocket/include/client.h
+

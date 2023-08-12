@@ -1,9 +1,4 @@
-#include <unistd.h>
-#include <sys/sysctl.h>
-#include <mach/mach_host.h>
-#include <mach/mach.h>
-
-#include "unix_socket.h"
+#include "server.h"
 
 
 struct ram_memory_info {
@@ -122,7 +117,7 @@ void buffingRamInfoResult(char buffer[]) {
         strcpy(error_msg, "Failed load ram info intro struct");
         perror(error_msg);
     }
-    sprintf(result,"{\"available\":%lld, \"usage\": %lld, \"total\": %lld}, \"err\": \"%s\"",
+    sprintf(result,"{\"available\":%lld, \"usage\": %lld, \"total\": %lld, \"err\": \"%s\"}",
             rm.available, rm.used, rm.total, error_msg);
     strcpy(buffer, result);
 }
