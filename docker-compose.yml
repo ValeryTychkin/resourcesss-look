@@ -13,9 +13,7 @@ services:
     depends_on:
       - db
     volumes:
-      - type: bind
-        source: ./
-        target: /app
+      - .:/app
     env_file: .env
     ports:
       - $APP_PORT:8080
